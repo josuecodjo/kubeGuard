@@ -7,9 +7,15 @@ import threading
 from services.kubescape import run_kubescape, parse_kubescape_summary_controls
 
 st.header("🔐 Kubescape Compliance Dashboard")
+
+# --- User Options
+# namespace = st.text_input("Kubernetes Namespace", "default")
+framework = st.selectbox("Security Framework", ["nsa", "mitre", "cis", "all"])
+save_output = st.checkbox("💾 Save report to local file", value=True)
+
 if st.button("▶️ Run Kubescape Scan"):
     st.info("Running Kubescape...")
-    data = run_kubescape()
+    data = run_kubescape(framework=framework)
     if data:
         df = parse_kubescape_summary_controls(data)
 

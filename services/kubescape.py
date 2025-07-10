@@ -3,10 +3,10 @@ import subprocess
 import pandas as pd
 import streamlit as st
 
-def run_kubescape():
+def run_kubescape(framework):
     try:
         result = subprocess.run(
-            ['kubescape', 'scan', '--format', 'json'],
+            ['kubescape', 'scan', '--format', 'json', 'framework', framework],
             capture_output=True,
             text=True,
             check=True
