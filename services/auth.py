@@ -1,13 +1,13 @@
-import streamlit_authenticator as stauth
+# from streamlit_authenticator.hasher import Hasher
+from streamlit_authenticator import Authenticate
 
 def setup_auth():
-    # Replace these with real users and hashed passwords
     names = ["Josh Admin"]
     usernames = ["josh"]
-    passwords = ["1234"]  # plaintext for dev only
+    passwords = ["1234"]
 
-    # Hash the passwords
-    hashed_passwords = stauth.Hasher(passwords).generate()
+    # Hash passwords
+    hashed_passwords = Hasher(passwords).generate()
 
     credentials = {
         "usernames": {
@@ -19,7 +19,7 @@ def setup_auth():
         }
     }
 
-    authenticator = stauth.Authenticate(
+    authenticator = Authenticate(
         credentials,
         "kubeshield_dashboard",
         "auth_cookie",
