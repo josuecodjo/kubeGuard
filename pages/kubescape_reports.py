@@ -6,7 +6,7 @@ import threading
 
 from services.kubescape import run_kubescape, parse_kubescape_summary_controls
 
-st.header("Kubescape Historical Scans")
+st.header("🔐 Kubescape Compliance Dashboard")
 if st.button("▶️ Run Kubescape Scan"):
     st.info("Running Kubescape...")
     data = run_kubescape()
