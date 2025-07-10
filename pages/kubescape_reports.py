@@ -12,26 +12,21 @@ if st.button("▶️ Run Kubescape Scan"):
     data = run_kubescape()
     if data:
         df = parse_kubescape_summary_controls(data)
-        if not df.empty:
-            st.success("✅ Scan Complete!")
 
-            pie_fig = px.pie(df, names="Status", title="Control Status Distribution")
-            st.plotly_chart(pie_fig, use_container_width=True)
+        st.subheader("📋 Control Summary")
+        st.dataframe(df)
 
-            bar_fig = px.bar(
-                df.sort_values("Compliance Score"),
+        st.subheader("📊 Failed Controls by Severity")
+        failed_df = df[df["Status"].str.lower() == "failed"]
+        if not failed_df.empty:
+            fig = px.bar(
+                failed_df.sort_values("Score", ascending=False).head(10),
                 x="Control Name",
-                y="Compliance Score",
-                color="Status",
-                hover_data=["Control ID", "Score", "Passed", "Failed", "Skipped"],
-                title="Compliance Scores by Control",
+                y="Score",
+                color="Category",
+                title="Top Failed Controls",
+                labels={"Score": "Severity Score"}
             )
-            st.plotly_chart(bar_fig, use_container_width=True)
-
-            with st.expander("📋 Detailed Table"):
-                st.dataframe(df)
-
-            failed_df = df[df["Status"] == "failed"]
-            if not failed_df.empty:
-                st.subheader("🚨 Failed Controls Summary")
-                st.dataframe(failed_df.sort_values("Failed", ascending=False))
+            st.plotly_chart(fig, use_container_width=True)
+        else:
+            st.success("✅ No failed controls detected.")
